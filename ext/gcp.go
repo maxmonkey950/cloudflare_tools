@@ -1,10 +1,9 @@
 package go_cf_postgres
 
 import (
-"database/sql"
-"fmt"
-
-_ "github.com/lib/pq"
+	"database/sql"
+	"fmt"
+	_ "github.com/lib/pq"
 )
 
 const (
@@ -20,7 +19,12 @@ type Teacher struct {
 	location string
 }
 
-func Inst(domains, cf string) {
+func checkErr(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+func Upda(domains, cf string) {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
@@ -34,18 +38,10 @@ func Inst(domains, cf string) {
 	if err != nil {
 		panic(err)
 	}
+	stmt, err := db.Prepare("update site.info set status=$1 where domain=$2")
+	checkErr(err)
 
-	fmt.Println("Successfully connected!")
-	sqlStatement := `
-INSERT INTO site.info (domain , location)
-VALUES ($1, $2)
-	RETURNING domain `
-	var domain string
-	//domain := "dcits.app"
-	err = db.QueryRow(sqlStatement, domains, cf).Scan(&domain)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("New record is:", domain)
+	stmt.Exec(domains, cf)
+	defer stmt.Close()
 
 }
