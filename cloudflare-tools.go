@@ -6,7 +6,7 @@ import (
 	"flag"
 	"fmt"
 	cloudflare "github.com/cloudflare/cloudflare-go"
-	"go_cf_postgres"
+	go_cf_postgres "github.com/maxmonkey950/cloudflare_tools/ext"
 	"log"
 	"os"
 	"path"
