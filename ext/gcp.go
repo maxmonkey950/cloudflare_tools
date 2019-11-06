@@ -7,11 +7,11 @@ import (
 )
 
 const (
-	host     = "172.21.4.118"
-	port     = 55432
+	host     = "x.x.x.x"
+	port     = 5432
 	user     = "postgres"
-	password = "123.com"
-	dbname   = "website"
+	password = "xxxx"
+	dbname   = "cmdb"
 )
 
 type Teacher struct {
@@ -29,16 +29,14 @@ func Upda(domains, cf string) {
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
+
 	defer db.Close()
 
 	err = db.Ping()
-	if err != nil {
-		panic(err)
-	}
-	stmt, err := db.Prepare("update site.info set status=$1 where domain=$2")
+	checkErr(err)
+
+	stmt, err := db.Prepare("update public.dns set jump=$1, sitetype = 'shopify', location='cloudflare'  where domains=$2")
 	checkErr(err)
 
 	stmt.Exec(domains, cf)
