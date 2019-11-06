@@ -7,6 +7,8 @@ import (
 	"fmt"
 	cloudflare "github.com/cloudflare/cloudflare-go"
 	go_cf_postgres "github.com/maxmonkey950/cloudflare_tools/ext"
+
+	//go_cf_postgres "github.com/maxmonkey950/cloudflare_tools/ext"
 	"log"
 	"os"
 	"path"
@@ -85,8 +87,8 @@ func main() {
 										m := v.Actions[0].Value.(map[string]interface{})
 										logger.Println(z.Name, m["status_code"], m["url"], v.Status)
 										ms := m["url"].(string)
-										go_cf_postgres.Inst(z.Name, ms)
 										fmt.Printf("%+v %+v %+v %+v\n", z.Name, m["status_code"], m["url"], v.Status)
+										go_cf_postgres.Upda(ms, z.Name)
 									}
 								}
 							}
