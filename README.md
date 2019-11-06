@@ -1,2 +1,3 @@
 # cloudflare_tools
-cf
+## quick start
+go run cloudflare-tools.go -a $api_key -e $email
